@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar_admin.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="py-2">
+    <!-- Dashboard Heading -->
+    <h3 class="fw-bold text-dark mb-4">Admin Dashboard</h3>
+
+    <!-- Metric Cards Row -->
+    <div class="row g-4 mb-4">
+        <!-- Total Students Card -->
+        <div class="col-md-4">
+            <div class="card fms-stat-card fms-stat-card-blue shadow-sm">
+                <div>
+                    <div class="fms-stat-title">Total Students</div>
+                    <div class="fms-stat-count">{{ total_students }}</div>
+                </div>
+                <div class="fms-stat-icon text-white">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Teachers Card -->
+        <div class="col-md-4">
+            <div class="card fms-stat-card fms-stat-card-green shadow-sm">
+                <div>
+                    <div class="fms-stat-title">Total Teachers</div>
+                    <div class="fms-stat-count">{{ total_teachers }}</div>
+                </div>
+                <div class="fms-stat-icon text-white">
+                    <i class="bi bi-person-video3"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Feedback Card -->
+        <div class="col-md-4">
+            <div class="card fms-stat-card fms-stat-card-yellow shadow-sm">
+                <div>
+                    <div class="fms-stat-title">Total Feedback</div>
+                    <div class="fms-stat-count">{{ total_feedback }}</div>
+                </div>
+                <div class="fms-stat-icon text-white">
+                    <i class="bi bi-chat-dots-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Feedback Section -->
+    <div class="card border-0 shadow-sm rounded-3 mt-4">
+        <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
+            <h5 class="fw-bold mb-3 text-dark">Recent Feedback</h5>
+
+            <!-- Search and Filter Form -->
+            <form method="GET" action="{% url 'admin_dashboard' %}" class="row g-2 align-items-center mb-2">
+                <div class="col-md-4">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                        <input type="text" name="search" class="form-control form-control-sm" placeholder="Search student, roll no, teacher..." value="{{ search_query }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="department" class="form-select form-select-sm">
+                        <option value="">Select Department</option>
+                        {% for dept in departments %}
+                            <option value="{{ dept }}" {% if selected_department == dept %}selected{% endif %}>{{ dept }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="teacher" class="form-select form-select-sm">
+                        <option value="">Select Teacher</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}" {% if selected_teacher == teacher.id|stringformat:"i" %}selected{% endif %}>
+                                {{ teacher.name }} ({{ teacher.department }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm flex-grow-1">Filter</button>
+                    {% if search_query or selected_department or selected_teacher %}
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary btn-sm" title="Reset filters">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4" style="width: 25%;">Student</th>
+                            <th style="width: 25%;">Teacher</th>
+                            <th style="width: 15%;">Rating</th>
+                            <th style="width: 20%;">Date</th>
+                            <th class="text-end pe-4" style="width: 15%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fb in recent_feedback %}
+                            <tr>
+                                <td class="ps-4 fw-medium text-dark">
+                                    {{ fb.student.name }}
+                                    <div class="small text-muted">{{ fb.student.roll_number }} ({{ fb.student.department }})</div>
+                                </td>
+                                <td>{{ fb.teacher.name }}</td>
+                                <td>
+                                    <span class="rating-stars-display" title="{{ fb.rating }} of 5 stars">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= fb.rating %}
+                                                ★
+                                            {% else %}
+                                                ☆
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </td>
+                                <td class="text-muted">{{ fb.created_at|date:"d M Y H:i" }}</td>
+                                <td class="text-end pe-4">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteFeedbackModal{{ fb.id }}">
+                                        <i class="bi bi-trash-fill me-1"></i> Delete
+                                    </button>
+
+                                    <!-- Delete Confirmation Modal -->
+                                    <div class="modal fade text-start" id="deleteFeedbackModal{{ fb.id }}" tabindex="-1" aria-labelledby="delModalLabel{{ fb.id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h6 class="modal-title" id="delModalLabel{{ fb.id }}">Confirm Feedback Deletion</h6>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete this feedback from <strong>{{ fb.student.name }}</strong> for <strong>{{ fb.teacher.name }}</strong>?</p>
+                                                    <blockquote class="blockquote fs-6 text-muted border-start ps-3 py-1">
+                                                        "{{ fb.description }}"
+                                                    </blockquote>
+                                                    <p class="text-muted small mb-0">This action cannot be undone.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                    <form method="POST" action="{% url 'feedback_delete' fb.id %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="next" value="{% url 'admin_dashboard' %}">
+                                                        <button type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    <i class="bi bi-chat-square-dots fs-3 d-block mb-2 text-secondary"></i>
+                                    No feedback submissions found.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

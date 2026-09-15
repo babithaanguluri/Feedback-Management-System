@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Management{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar_admin.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="py-2">
+    <!-- Header Row with Add Teacher button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark mb-0">Teacher Management</h3>
+        <a href="{% url 'teacher_add' %}" class="btn btn-primary px-3 py-2 fw-medium">
+            <i class="bi bi-plus-lg me-1"></i> Add Teacher
+        </a>
+    </div>
+
+    <!-- Teacher Table -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover fms-table fms-table-dark-header mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">S.No</th>
+                        <th style="width: 25%;">Name</th>
+                        <th style="width: 20%;">Department</th>
+                        <th style="width: 25%;">Email</th>
+                        <th style="width: 12%;">Phone</th>
+                        <th class="text-center" style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for teacher in teachers %}
+                        <tr>
+                            <td class="fw-medium text-secondary">{{ forloop.counter }}</td>
+                            <td class="fw-medium text-dark">{{ teacher.name }}</td>
+                            <td><span class="badge bg-secondary-subtle text-secondary-emphasis px-2 py-1">{{ teacher.department }}</span></td>
+                            <td>{{ teacher.email }}</td>
+                            <td>{{ teacher.phone|default:"-" }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{% url 'teacher_edit' teacher.id %}" class="btn fms-btn-icon fms-btn-edit" title="Edit Teacher">
+                                        <i class="bi bi-pencil-square text-dark"></i>
+                                    </a>
+                                    <button type="button" class="btn fms-btn-icon fms-btn-delete" data-bs-toggle="modal" data-bs-target="#deleteTeacherModal{{ teacher.id }}" title="Delete Teacher">
+                                        <i class="bi bi-trash-fill text-white"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Delete Confirmation Modal -->
+                                <div class="modal fade text-start" id="deleteTeacherModal{{ teacher.id }}" tabindex="-1" aria-labelledby="delTeacherModalLabel{{ teacher.id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h6 class="modal-title" id="delTeacherModalLabel{{ teacher.id }}">Confirm Teacher Deletion</h6>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete teacher <strong>{{ teacher.name }}</strong> ({{ teacher.department }})?</p>
+                                                <div class="alert alert-warning small mb-0 py-2">
+                                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                                    This will also remove all feedbacks associated with this teacher.
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                <form method="POST" action="{% url 'teacher_delete' teacher.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <i class="bi bi-person-video3 fs-3 d-block mb-2 text-secondary"></i>
+                                No teachers registered yet. Click <strong>+ Add Teacher</strong> to add one.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

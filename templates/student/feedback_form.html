@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Feedback Form{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar_student.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-3">
+    <div class="col-md-9 col-lg-8">
+        <div class="feedback-card shadow-sm border-0">
+            <!-- Blue Header Bar -->
+            <div class="feedback-card-header">
+                Student Feedback Form
+            </div>
+
+            <!-- Form Body -->
+            <div class="card-body p-4">
+                <form method="POST" action="{% url 'student_feedback_form' %}" id="student-feedback-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger py-2">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Auto-filled Non-Editable Student Details (3 columns in a row) -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium text-dark small mb-1">Roll Number</label>
+                            <input type="text" class="form-control form-control-readonly" value="{{ student.roll_number }}" readonly tabindex="-1">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium text-dark small mb-1">Name</label>
+                            <input type="text" class="form-control form-control-readonly" value="{{ student.name }}" readonly tabindex="-1">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium text-dark small mb-1">Department</label>
+                            <input type="text" class="form-control form-control-readonly" value="{{ student.department }}" readonly tabindex="-1">
+                        </div>
+                    </div>
+
+                    <!-- Select Teacher -->
+                    <div class="mb-3">
+                        <label for="{{ form.teacher.id_for_label }}" class="form-label fw-medium text-dark small mb-1">Select Teacher</label>
+                        {{ form.teacher }}
+                        {% if form.teacher.errors %}
+                            <div class="text-danger small mt-1">{{ form.teacher.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Rating Description -->
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label fw-medium text-dark small mb-1">Rating Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="text-danger small mt-1">{{ form.description.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Rating (Stars) -->
+                    <div class="mb-4">
+                        <label class="form-label fw-medium text-dark small mb-1 d-block">Rating</label>
+                        {{ form.rating }}
+                        <div class="interactive-stars" id="star-rating-container" role="radiogroup" aria-label="Rating from 1 to 5 stars">
+                            <span class="star-item" data-value="1" title="1 Star"><i class="bi bi-star"></i></span>
+                            <span class="star-item" data-value="2" title="2 Stars"><i class="bi bi-star"></i></span>
+                            <span class="star-item" data-value="3" title="3 Stars"><i class="bi bi-star"></i></span>
+                            <span class="star-item" data-value="4" title="4 Stars"><i class="bi bi-star"></i></span>
+                            <span class="star-item" data-value="5" title="5 Stars"><i class="bi bi-star"></i></span>
+                        </div>
+                        <div id="rating-helper-text" class="star-helper-text text-muted">Please select a rating</div>
+                        {% if form.rating.errors %}
+                            <div class="text-danger small mt-1">{{ form.rating.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="btn btn-primary px-4 py-2 fw-medium" id="submit-feedback-btn">
+                            Submit Feedback
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/rating.js' %}"></script>
+{% endblock %}

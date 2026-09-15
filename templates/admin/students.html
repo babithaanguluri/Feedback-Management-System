@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Management{% endblock %}
+
+{% block navbar %}
+    {% include 'navbar_admin.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="py-2">
+    <!-- Header Row with Add Student button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark mb-0">Student Management</h3>
+        <a href="{% url 'student_add' %}" class="btn btn-primary px-3 py-2 fw-medium">
+            <i class="bi bi-plus-lg me-1"></i> Add Student
+        </a>
+    </div>
+
+    <!-- Student Table -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover fms-table fms-table-dark-header mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">S.No</th>
+                        <th style="width: 15%;">Name</th>
+                        <th style="width: 12%;">Roll No</th>
+                        <th style="width: 12%;">Department</th>
+                        <th style="width: 20%;">Email</th>
+                        <th style="width: 12%;">Phone</th>
+                        <th style="width: 14%;">Address</th>
+                        <th class="text-center" style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td class="fw-medium text-secondary">{{ forloop.counter }}</td>
+                            <td class="fw-medium text-dark">{{ student.name }}</td>
+                            <td>{{ student.roll_number }}</td>
+                            <td>{{ student.department }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.phone }}</td>
+                            <td class="text-truncate" style="max-width: 160px;" title="{{ student.address }}">
+                                {{ student.address|default:"-" }}
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{% url 'student_edit' student.id %}" class="btn fms-btn-icon fms-btn-edit" title="Edit Student">
+                                        <i class="bi bi-pencil-square text-dark"></i>
+                                    </a>
+                                    <button type="button" class="btn fms-btn-icon fms-btn-delete" data-bs-toggle="modal" data-bs-target="#deleteStudentModal{{ student.id }}" title="Delete Student">
+                                        <i class="bi bi-trash-fill text-white"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Delete Confirmation Modal -->
+                                <div class="modal fade text-start" id="deleteStudentModal{{ student.id }}" tabindex="-1" aria-labelledby="delStudentModalLabel{{ student.id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h6 class="modal-title" id="delStudentModalLabel{{ student.id }}">Confirm Student Deletion</h6>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete student <strong>{{ student.name }}</strong> (Roll No: <code>{{ student.roll_number }}</code>)?</p>
+                                                <div class="alert alert-warning small mb-0 py-2">
+                                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                                    This will also permanently delete their login account and all associated feedbacks.
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                <form method="POST" action="{% url 'student_delete' student.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                <i class="bi bi-people fs-3 d-block mb-2 text-secondary"></i>
+                                No students added yet. Click <strong>+ Add Student</strong> to add one.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

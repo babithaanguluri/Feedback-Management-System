@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Login - Feedback Management System{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-dark fms-navbar">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand" href="{% url 'student_login' %}">
+            <i class="bi bi-mortarboard-fill"></i>
+            <span>FMS Student Portal</span>
+        </a>
+        <div class="d-flex align-items-center">
+            <a href="{% url 'admin_login' %}" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-shield-lock me-1"></i> Admin Login
+            </a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="card-header text-white text-center py-3" style="background: var(--fms-blue-grad);">
+                <h4 class="mb-0 fw-semibold"><i class="bi bi-mortarboard me-2"></i>Student Login</h4>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted text-center small mb-4">
+                    Enter your student name and roll number assigned by administration.
+                </p>
+                <form method="POST" action="{% url 'student_login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Username (Student Name)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="e.g. Rahul" required autofocus>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-semibold">Password (Roll Number)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-key"></i></span>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="e.g. 23CS101" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                    </button>
+                </form>
+            </div>
+            <div class="card-footer bg-light text-center py-3 border-0">
+                <small class="text-muted">Need access? Contact the department administrator.</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

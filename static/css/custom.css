@@ -1,0 +1,324 @@
+/* ==========================================================================
+   FEEDBACK MANAGEMENT SYSTEM (FMS) - PROFESSIONAL DESIGN SYSTEM
+   ========================================================================== */
+
+:root {
+  /* Color Palette */
+  --fms-bg: #f4f6fb;
+  --fms-card-bg: #ffffff;
+  --fms-text-main: #1e293b;
+  --fms-text-muted: #64748b;
+  --fms-border: #e2e8f0;
+  --fms-border-light: #f1f5f9;
+
+  /* Brand / Role Colors */
+  --fms-nav-bg: #0f172a;       /* Slate 900 */
+  --fms-table-head: #1e293b;   /* Slate 800 */
+  
+  /* Vibrant Dashboard Gradients */
+  --fms-blue-grad: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  --fms-green-grad: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+  --fms-yellow-grad: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+  
+  /* Primary Action */
+  --fms-primary: #2563eb;
+  --fms-primary-hover: #1d4ed8;
+
+  /* Shadows */
+  --fms-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --fms-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --fms-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}
+
+body {
+  background-color: var(--fms-bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--fms-text-main);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR
+   ========================================================================== */
+.fms-navbar {
+  background-color: var(--fms-nav-bg) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.fms-navbar .navbar-brand {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #ffffff !important;
+}
+
+.fms-navbar .navbar-brand i {
+  font-size: 1.3rem;
+  color: #60a5fa; /* Light blue accent for graduation cap */
+}
+
+.fms-navbar .nav-link {
+  color: #94a3b8 !important; /* Muted slate */
+  margin-right: 0.6rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem !important;
+  border-radius: 6px;
+  transition: all 0.15s ease-in-out;
+}
+
+.fms-navbar .nav-link:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.fms-navbar .nav-link.active {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+}
+
+.fms-nav-right a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.15s ease-in-out;
+}
+
+.fms-nav-right a:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   DASHBOARD STAT CARDS
+   ========================================================================== */
+.fms-stat-card {
+  border: none;
+  border-radius: 12px;
+  padding: 1.6rem 1.75rem;
+  min-height: 140px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fms-stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.fms-stat-card-blue {
+  background: var(--fms-blue-grad);
+  color: #ffffff;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.32);
+}
+
+.fms-stat-card-green {
+  background: var(--fms-green-grad);
+  color: #ffffff;
+  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.32);
+}
+
+.fms-stat-card-yellow {
+  background: var(--fms-yellow-grad);
+  color: #ffffff;
+  box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.32);
+}
+
+.fms-stat-title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.35rem;
+  opacity: 0.92;
+}
+
+.fms-stat-count {
+  font-size: 2.35rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.fms-stat-icon {
+  font-size: 3.25rem;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+/* ==========================================================================
+   TABLES & CARDS
+   ========================================================================== */
+.card {
+  border-radius: 12px;
+  border: 1px solid var(--fms-border);
+  box-shadow: var(--fms-shadow-sm);
+  background-color: var(--fms-card-bg);
+}
+
+.fms-table-dark-header thead th {
+  background-color: var(--fms-table-head) !important;
+  color: #f8fafc !important;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  border: none;
+  padding: 0.9rem 1.1rem;
+  vertical-align: middle;
+}
+
+.fms-table tbody td {
+  padding: 0.85rem 1.1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--fms-border-light);
+  color: var(--fms-text-main);
+  font-size: 0.92rem;
+}
+
+.fms-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Action Buttons */
+.fms-btn-icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.15s ease-in-out;
+}
+
+.fms-btn-edit {
+  background-color: #f59e0b;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.25);
+}
+.fms-btn-edit:hover {
+  background-color: #d97706;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.fms-btn-delete {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 1px 3px rgba(239, 68, 68, 0.25);
+}
+.fms-btn-delete:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   STAR RATING DISPLAY
+   ========================================================================== */
+.rating-stars-display {
+  color: #f59e0b;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+}
+
+/* ==========================================================================
+   STUDENT FEEDBACK FORM
+   ========================================================================== */
+.feedback-card {
+  border-radius: 12px;
+  border: 1px solid var(--fms-border);
+  overflow: hidden;
+  box-shadow: var(--fms-shadow-md);
+  background: var(--fms-card-bg);
+}
+
+.feedback-card-header {
+  background: var(--fms-blue-grad);
+  color: #ffffff;
+  padding: 1rem 1.75rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Readonly input styling */
+.form-control-readonly {
+  background-color: #f8fafc !important;
+  color: #334155 !important;
+  border-color: #e2e8f0 !important;
+  font-weight: 500;
+  cursor: default;
+}
+
+/* Interactive Star Rating Widget */
+.interactive-stars {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.4rem;
+  font-size: 2.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.star-item {
+  color: #f59e0b;
+  transition: transform 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.star-item:hover {
+  transform: scale(1.18);
+}
+
+.star-helper-text {
+  font-size: 0.88rem;
+  color: var(--fms-text-muted);
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--fms-primary);
+  border-color: var(--fms-primary);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--fms-primary-hover);
+  border-color: var(--fms-primary-hover);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Form inputs focus */
+.form-control:focus, .form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}

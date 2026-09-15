@@ -4,7 +4,7 @@ A complete, production-ready Django web application for college feedback managem
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 - **Role-Based Separation**:
   - **Admin**: Full control over student records, teacher records, submitted feedback, and analytics.
@@ -22,7 +22,7 @@ A complete, production-ready Django web application for college feedback managem
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone the repository
 ```bash
@@ -52,14 +52,14 @@ python manage.py runserver 127.0.0.1:8000
 
 ---
 
-## 🔑 Default Credentials
+## Default Credentials
 
 | Portal | URL | Username | Password |
 |---|---|---|---|
 | **Admin Portal** | `http://127.0.0.1:8000/admin-login/` | `admin` | `admin123` |
-| **Student (Rahul)** | `http://127.0.0.1:8000/student-login/` | `Rahul` | `23CS101` |
-| **Student (Priya)** | `http://127.0.0.1:8000/student-login/` | `Priya` | `23CS102` |
-| **Student (Arjun)** | `http://127.0.0.1:8000/student-login/` | `Arjun Kumar` | `23CS103` |
+| **Student** | `http://127.0.0.1:8000/student-login/` | `Rahul` | `23CS101` |
+| **Student** | `http://127.0.0.1:8000/student-login/` | `Priya` | `23CS102` |
+| **Student** | `http://127.0.0.1:8000/student-login/` | `Arjun Kumar` | `23CS103` |
 
 ---
 
